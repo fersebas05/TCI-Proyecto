@@ -1,0 +1,103 @@
+#include "stringLista.h"
+#include <string.h>
+
+str create(){
+	str aux = NULL;
+	aux= (str)malloc(sizeof(Tnodo));
+	aux->dato = '\0';
+	aux->sig=NULL;
+	return aux;
+}
+
+void agregarFin(str *cab, str nuevo){
+	if(*cab == NULL)
+		*cab = nuevo;
+	else{
+		str ult; ult = *cab;
+		while(ult->sig != NULL)
+			ult = ult->sig;
+		ult->sig = nuevo;
+	}
+}
+	
+str creaNodo(char m){
+	str nuevo;
+	nuevo = (str)malloc(sizeof(Tnodo));
+	nuevo->dato = m;
+	nuevo->sig = NULL;
+	return nuevo;
+}
+
+str load(){
+	char m;
+	str cab = NULL, aux;
+	m = getchar();
+	while(m !=EOF && m != '\n'){
+		aux = creaNodo(m);
+		agregarFin(&cab, aux);
+		m = getchar();
+	}
+	return cab;
+}
+
+void mostrarCaracter(char m){
+	printf("%c", m);
+}
+	
+void print(str aux){
+	if(aux == NULL)
+		printf("Lista Vacia");
+	else{
+		printf("[");
+		while(aux != NULL){
+			mostrarCaracter(aux->dato);
+			//printf(",");
+			aux = aux->sig;
+		}
+		printf("]");
+	}
+}
+
+void agregarFin2(str *cab, char m){
+	str nvo;
+	nvo = create();
+	nvo->dato = m;
+	nvo->sig = NULL;
+	agregarFin(cab, nvo);
+}
+	
+str concat(str cab, str cab2){
+	str ult;
+	ult = cab;
+	while(ult->sig != NULL)
+		ult = ult->sig;
+	ult->sig = cab2;
+	return cab;
+}
+
+str beforeToken(str cab, char s){
+	str ant = NULL;
+	ant = create();
+	do{
+		agregarFin2(&ant, cab->dato);
+		cab = cab->sig;
+	}while(cab != NULL && cab->dato != s);
+	agregarFin2(&ant, cab->dato);
+	return ant;
+}
+	
+str load2(const char *m){
+	str cab, nuevo;
+	cab = create();
+	int i = 0;
+	
+	while(m[i] != '\0'){
+		nuevo = create();
+		nuevo->dato=m[i];
+		agregarFin(&cab, nuevo);
+		i++;
+	}
+	return cab;
+}
+
+
